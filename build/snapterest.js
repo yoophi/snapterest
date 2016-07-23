@@ -18681,7 +18681,40 @@ if (process.env.NODE_ENV !== 'production') {
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var reactElement = React.createElement('h1', { className: 'header' }, 'This is React.');
-ReactDOM.render(reactElement, document.getElementById('react-application'));
+var ReactClass = React.createClass({
+    displayName: 'ReactClass',
+
+    getInitialState: function getInitialState() {
+        return {
+            isHeaderHidden: false,
+            title: 'Stateful React Component'
+        };
+    },
+    handleClick: function handleClick() {
+        this.setState({
+            isHeaderHidden: !this.state.isHeaderHidden
+        });
+    },
+    render: function render() {
+        var headerElement = React.createElement('h1', {
+            className: 'header',
+            key: 'header'
+        }, this.state.title);
+        var buttonElement = React.createElement('button', {
+            className: 'btn btn-default',
+            onClick: this.handleClick,
+            key: 'button'
+        }, 'Toggle header');
+
+        if (this.state.isHeaderHidden) {
+            return React.createElement('div', null, [buttonElement]);
+        }
+
+        return React.createElement('div', null, [buttonElement, headerElement]);
+    }
+});
+
+var reactComponentElement = React.createElement(ReactClass);
+var reactComponent = ReactDOM.render(reactComponentElement, document.getElementById('react-application'));
 
 },{"react":155,"react-dom":2}]},{},[156]);
